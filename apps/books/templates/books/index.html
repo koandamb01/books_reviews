@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <title>Welcome</title>
+    <style>
+        .container{
+            padding-top: 25px;
+        }
+        
+        span{
+            font-size: 12px;
+        }
+        
+        h6 {
+            text-decoration: underline;
+        }
+        h5{
+            color: white;
+            margin-right: 40px;
+        }
+        .msg-box{
+            width: 300px;
+            /* background-color: grey; */
+            margin: 0px 0px 40px 30px;
+        }
+        .msg-box p{
+            margin: 0px;
+        }
+        .msg-box span{
+            margin: 0px 50px 0px 30px;
+        }
+        .msg-send{
+            margin: 0px 0px 40px 0px;
+        }
+        
+        .msg-send p{
+            width: 80px;
+        }
+        .msg-send p, .msg-send input, .msg-send form{
+            display: inline-block;
+            vertical-align: top;
+        }
+        
+        .msg-send input{
+            height: 40px;
+            border: 1px solid rgb(20, 20, 20);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="h3 mb-3 font-weight-normal">Login and Registration</h1>
+        <div class="row">
+            <div class="col-md-6">
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'logout error' %}
+                            <span class="text-danger">{{ message }}</span>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <h2 class="h3 mb-3 font-weight-normal">Registration here!</h2>
+                <form action="/register" method="POST">
+                    {% csrf_token %}
+                    <div class="form-row">
+                      <div class="col-md-6 mb-3">
+                        <label for="first_name">First name</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="First name" value="{{ request.session.first_name }}">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.extra_tags == 'first_name' %}
+                                    <span class="text-danger">{{ message }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                      <div class="col-md-6 mb-3">
+                        <label for="last_name">Last name</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="Last name" value="{{ request.session.last_name }}">
+                        {% if messages %}
+                            {% for message in messages %}
+                                {% if message.tags == 'last_name error' %}
+                                    <span class="text-danger">{{ message }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div>
+    
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" name="email" placeholder="Email" value="{{ request.session.email }}">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'email error' %}
+                                        <span class="text-danger">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="username">Alias</label>
+                                <input type="text" name="alias" class="form-control" placeholder="Alias" value="{{ request.session.ala }}">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'alias error' %}
+                                        <span class="text-danger">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+    
+                    <div class="form-row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Password">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'password error' %}
+                                        <span class="text-danger">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name">Confirm Password</label>
+                            <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    {% if message.tags == 'confirm_password error' %}
+                                        <span class="text-danger">{{ message }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Register</button>
+                </form>
+            </div>
+            
+            <div class="col-md-1"></div>
+            
+            <div class="col-md-3">
+                <form class="form-signin" action="/login" method="POST">
+                    {% csrf_token %}
+                    <br />
+                    <h1 class="h3 mb-3 font-weight-normal">Login in</h1>
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'login error' %}
+                                <span class="text-danger">{{ message }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    <label for="email" class="sr-only">Email address</label>
+                    <input type="email" name="email" class="form-control" placeholder="Email address" autofocus>
+                    <br />
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <br />
+                    <button class="btn btn-primary" type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
